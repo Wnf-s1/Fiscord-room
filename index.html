@@ -1,0 +1,45 @@
+Enter<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>JSON Viewer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Arial;
+  background:#0B1C2D;
+  color:#C7CCD6;
+}
+header{
+  padding:16px;
+  background:#0F2740;
+  font-weight:bold;
+}
+pre{
+  margin:0;
+  padding:16px;
+  overflow:auto;
+  white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+<header>📄 JSON Data</header>
+<pre id="output">Loading...</pre>
+
+<script>
+fetch('data.json')
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById('output').textContent =
+      JSON.stringify(d, null, 2);
+  })
+  .catch(() => {
+    document.getElementById('output').textContent =
+      'تعذر تحميل ملف JSON';
+  });
+</script>
+</body>
+</html>
