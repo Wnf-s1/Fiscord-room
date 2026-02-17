@@ -1,45 +1,151 @@
-Enter<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>JSON Viewer</title>
+<title>Account Control</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Arial;
+  font-family: system-ui, Arial;
   background:#0B1C2D;
   color:#C7CCD6;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
 }
-header{
-  padding:16px;
+
+.container{
+  width:360px;
   background:#0F2740;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+h2{
+  margin-top:0;
+  text-align:center;
+}
+
+input, button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  font-size:14px;
+}
+
+input{
+  background:#081626;
+  color:#fff;
+}
+
+button{
+  background:#1E88E5;
+  color:white;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#263E5A;
+}
+
+.status{
+  margin-top:10px;
+  text-align:center;
   font-weight:bold;
 }
-pre{
-  margin:0;
-  padding:16px;
-  overflow:auto;
-  white-space:pre-wrap;
+
+.status.online{ color:#4CAF50; }
+.status.offline{ color:#E53935; }
+
+.avatar{
+  display:flex;
+  justify-content:center;
+  margin-top:15px;
+}
+
+.avatar img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  border:3px solid #1E88E5;
+  display:none;
 }
 </style>
 </head>
 
 <body>
-<header>📄 JSON Data</header>
-<pre id="output">Loading...</pre>
+
+<div class="container">
+  <h2>لوحة الحساب</h2>
+
+  <!-- Token -->
+  <input type="password" id="token" placeholder="أدخل التوكن">
+  <button onclick="checkToken()">تحقق من التوكن</button>
+
+  <!-- Avatar -->
+  <div class="avatar">
+    <img id="avatar" src="">
+  </div>
+
+  <!-- Status -->
+  <div id="status" class="status offline">Offline</div>
+
+  <!-- Room -->
+  <input type="text" id="room" placeholder="ID الروم">
+  <button class="secondary" onclick="joinRoom()">دخول الروم</button>
+  <button class="secondary" onclick="leaveRoom()">خروج من الروم</button>
+</div>
 
 <script>
-fetch('data.json')
-  .then(r => r.json())
-  .then(d => {
-    document.getElementById('output').textContent =
-      JSON.stringify(d, null, 2);
-  })
-  .catch(() => {
-    document.getElementById('output').textContent =
-      'تعذر تحميل ملف JSON';
-  });
+let verified = false;
+
+function checkToken(){
+  const token = document.getElementById('token').value;
+
+  if(token.length < 10){
+    alert("توكن غير صالح");
+    return;
+  }
+
+  // محاكاة تحقق
+  verified = true;
+
+  document.getElementById('status').textContent = "Online";
+  document.getElementById('status').className = "status online";
+
+  // أفاتار تجريبي
+  const avatar = document.getElementById('avatar');
+  avatar.src = "https://i.pravatar.cc/150?u=" + token;
+  avatar.style.display = "block";
+}
+
+function joinRoom(){
+  if(!verified){
+    alert("تحقق من التوكن أولاً");
+    return;
+  }
+  const room = document.getElementById('room').value;
+  if(!room){
+    alert("أدخل ID الروم");
+    return;
+  }
+  alert("تم دخول الروم: " + room);
+}
+
+function leaveRoom(){
+  if(!verified){
+    alert("تحقق من التوكن أولاً");
+    return;
+  }
+  alert("تم الخروج من الروم");
+}
 </script>
+
 </body>
 </html>
